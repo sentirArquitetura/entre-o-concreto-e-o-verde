@@ -12,11 +12,11 @@
 
   const reduzMovimento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* ---------- Topo + progresso + trepadeira ---------- */
+  /* ---------- Barra de compra + progresso + trepadeira ---------- */
 
-  const topo = document.querySelector('[data-topo]');
-  const abertura = document.querySelector('.abertura');
   const raiz = document.documentElement;
+  const topo = document.querySelector('[data-topo]');
+  const botaoAbertura = document.querySelector('.abertura__acoes .botao');
   const caule = document.querySelector('.trepadeira__caule');
   const folhas = [...document.querySelectorAll('.trepadeira__folha')].map((el) => ({
     el,
@@ -30,11 +30,13 @@
     const progresso = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
     raiz.style.setProperty('--progresso', progresso.toFixed(4));
     if (caule) caule.style.strokeDashoffset = (1 - progresso).toFixed(4);
-
-    const limite = abertura ? abertura.offsetHeight * 0.6 : 200;
-    topo.classList.toggle('is-solido', window.scrollY > limite);
-
     for (const f of folhas) f.el.classList.toggle('is-viva', progresso >= f.pos);
+
+    // A barra desce assim que o botão de compra da abertura sai da tela.
+    const limite = botaoAbertura
+      ? botaoAbertura.getBoundingClientRect().bottom + window.scrollY
+      : window.innerHeight;
+    topo.classList.toggle('is-visivel', window.scrollY > limite);
   }
   window.addEventListener('scroll', () => {
     if (!agendado) { agendado = true; requestAnimationFrame(aoRolar); }
@@ -44,9 +46,7 @@
 
   /* ---------- Revelar ao rolar ---------- */
 
-  document.querySelectorAll('.ruido li').forEach((li, i) => li.style.setProperty('--i', i));
-
-  const revelaveis = document.querySelectorAll('.revelar, .ruido');
+  const revelaveis = document.querySelectorAll('.revelar');
   if (reduzMovimento || !('IntersectionObserver' in window)) {
     revelaveis.forEach((el) => el.classList.add('is-visivel'));
   } else {
@@ -59,6 +59,62 @@
       }
     }, { rootMargin: '0px 0px -8% 0px', threshold: 0.12 });
     revelaveis.forEach((el) => obs.observe(el));
+  }
+
+  /* ---------- Carrossel ---------- */
+
+  const carrossel = document.querySelector('[data-carrossel]');
+  if (carrossel) {
+    const trilho = carrossel.querySelector('.carrossel__trilho');
+    const slides = [...trilho.children];
+    const pontos = carrossel.querySelector('[data-pontos]');
+    const anterior = document.querySelector('[data-anterior]');
+    const proxima = document.querySelector('[data-proxima]');
+
+    const inicioDoTrilho = () => parseFloat(getComputedStyle(trilho).scrollPaddingInlineStart) || 0;
+    const irPara = (i) => {
+      const alvo = slides[Math.max(0, Math.min(slides.length - 1, i))];
+      trilho.scrollTo({ left: alvo.offsetLeft - inicioDoTrilho() });
+    };
+
+    const botoes = slides.map((_, i) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.setAttribute('aria-label', `Foto ${i + 1} de ${slides.length}`);
+      b.addEventListener('click', () => irPara(i));
+      pontos.appendChild(b);
+      return b;
+    });
+
+    let atual = 0;
+    function atualizar() {
+      const x = trilho.scrollLeft + inicioDoTrilho();
+      let melhor = 0;
+      slides.forEach((s, i) => {
+        if (Math.abs(s.offsetLeft - x) < Math.abs(slides[melhor].offsetLeft - x)) melhor = i;
+      });
+      const fim = trilho.scrollLeft + trilho.clientWidth >= trilho.scrollWidth - 4;
+      atual = fim ? slides.length - 1 : melhor;
+      botoes.forEach((b, i) => b.setAttribute('aria-current', i === atual ? 'true' : 'false'));
+      anterior.disabled = trilho.scrollLeft <= 4;
+      proxima.disabled = fim;
+    }
+
+    anterior.addEventListener('click', () => irPara(atual - 1));
+    proxima.addEventListener('click', () => irPara(atual + 1));
+    trilho.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') { e.preventDefault(); irPara(atual + 1); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); irPara(atual - 1); }
+    });
+
+    let quadro = 0;
+    trilho.addEventListener('scroll', () => {
+      cancelAnimationFrame(quadro);
+      quadro = requestAnimationFrame(atualizar);
+    }, { passive: true });
+    window.addEventListener('resize', atualizar);
+    window.addEventListener('load', atualizar);
+    atualizar();
   }
 
   /* ---------- Ano no rodapé ---------- */

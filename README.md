@@ -43,6 +43,6 @@ Observações: acessos pelo próprio computador (`localhost`/arquivo local) não
 
 O link `https://www.amazon.com.br/dp/B0GVBBC9XH` aparece em 4 botões no `index.html`. Para trocar, busque por `B0GVBBC9XH` e substitua.
 
-## Foto da autora
+## Imagens
 
-Hoje a seção "Sobre a autora" mostra o monograma "FF". Para usar uma foto, salve-a como `assets/img/fernanda-familiar.jpg` e siga o comentário dentro de `.autora__retrato` no `index.html`.
+Todas ficam em `assets/img/`. Para trocar uma foto, substitua o arquivo mantendo o mesmo nome. O carrossel ("O livro de perto") está no `index.html`, dentro de `<ul class="carrossel__trilho">`: cada `<li>` é uma foto.
