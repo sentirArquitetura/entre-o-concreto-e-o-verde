@@ -117,11 +117,6 @@
     atualizar();
   }
 
-  /* ---------- Ano no rodapé ---------- */
-
-  const ano = document.querySelector('[data-ano]');
-  if (ano) ano.textContent = new Date().getFullYear();
-
   /* ---------- Contagem de visitas e cliques (GoatCounter) ---------- */
 
   if (!CONFIG.goatcounter) return;

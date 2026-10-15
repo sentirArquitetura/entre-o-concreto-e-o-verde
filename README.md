@@ -41,7 +41,7 @@ Observações: acessos pelo próprio computador (`localhost`/arquivo local) não
 
 ## Trocar o link de compra
 
-O link `https://www.amazon.com.br/dp/B0GVBBC9XH` aparece em 4 botões no `index.html`. Para trocar, busque por `B0GVBBC9XH` e substitua.
+O link `https://www.amazon.com.br/dp/B0GVBBC9XH` aparece em todos os botões e links de compra do `index.html`. Para trocar, busque por `B0GVBBC9XH` e substitua.
 
 ## Imagens
 
