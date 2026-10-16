@@ -61,62 +61,6 @@
     revelaveis.forEach((el) => obs.observe(el));
   }
 
-  /* ---------- Carrossel ---------- */
-
-  const carrossel = document.querySelector('[data-carrossel]');
-  if (carrossel) {
-    const trilho = carrossel.querySelector('.carrossel__trilho');
-    const slides = [...trilho.children];
-    const pontos = carrossel.querySelector('[data-pontos]');
-    const anterior = document.querySelector('[data-anterior]');
-    const proxima = document.querySelector('[data-proxima]');
-
-    const inicioDoTrilho = () => parseFloat(getComputedStyle(trilho).scrollPaddingInlineStart) || 0;
-    const irPara = (i) => {
-      const alvo = slides[Math.max(0, Math.min(slides.length - 1, i))];
-      trilho.scrollTo({ left: alvo.offsetLeft - inicioDoTrilho() });
-    };
-
-    const botoes = slides.map((_, i) => {
-      const b = document.createElement('button');
-      b.type = 'button';
-      b.setAttribute('aria-label', `Foto ${i + 1} de ${slides.length}`);
-      b.addEventListener('click', () => irPara(i));
-      pontos.appendChild(b);
-      return b;
-    });
-
-    let atual = 0;
-    function atualizar() {
-      const x = trilho.scrollLeft + inicioDoTrilho();
-      let melhor = 0;
-      slides.forEach((s, i) => {
-        if (Math.abs(s.offsetLeft - x) < Math.abs(slides[melhor].offsetLeft - x)) melhor = i;
-      });
-      const fim = trilho.scrollLeft + trilho.clientWidth >= trilho.scrollWidth - 4;
-      atual = fim ? slides.length - 1 : melhor;
-      botoes.forEach((b, i) => b.setAttribute('aria-current', i === atual ? 'true' : 'false'));
-      anterior.disabled = trilho.scrollLeft <= 4;
-      proxima.disabled = fim;
-    }
-
-    anterior.addEventListener('click', () => irPara(atual - 1));
-    proxima.addEventListener('click', () => irPara(atual + 1));
-    trilho.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowRight') { e.preventDefault(); irPara(atual + 1); }
-      if (e.key === 'ArrowLeft') { e.preventDefault(); irPara(atual - 1); }
-    });
-
-    let quadro = 0;
-    trilho.addEventListener('scroll', () => {
-      cancelAnimationFrame(quadro);
-      quadro = requestAnimationFrame(atualizar);
-    }, { passive: true });
-    window.addEventListener('resize', atualizar);
-    window.addEventListener('load', atualizar);
-    atualizar();
-  }
-
   /* ---------- Contagem de visitas e cliques (GoatCounter) ---------- */
 
   if (!CONFIG.goatcounter) return;

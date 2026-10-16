@@ -212,11 +212,9 @@ a { color: inherit; }
   min-width: 0;
 }
 .topo__capa {
-  width: 34px;
+  width: 36px;
   max-width: none;
   height: 48px;
-  object-fit: cover;
-  object-position: 45% 40%;
   border-radius: 3px;
   box-shadow: 0 4px 10px -4px rgba(0, 0, 0, .5);
 }
@@ -373,11 +371,12 @@ a { color: inherit; }
 /* Moldura em arco: a forma mais antiga de a arquitetura deixar a luz entrar */
 .arco {
   position: relative;
-  border-radius: 999px 999px 18px 18px;
+  /* arco proporcional à foto (3:4): arredonda só o fundo da mesa, nunca o livro */
+  border-radius: 28% 28% 5% 5% / 21% 21% 3.75% 3.75%;
   overflow: hidden;
   box-shadow: 0 40px 60px -30px rgba(37, 41, 44, .55), 0 0 0 10px rgba(255, 255, 255, .55);
 }
-.arco img { width: 100%; aspect-ratio: 1115 / 1599; object-fit: cover; }
+.arco img { width: 100%; }
 
 /* Ladrilhos azuis da capa — começam quadrados e viram folhas */
 .abertura__ladrilhos { position: absolute; left: -10px; bottom: 12%; display: grid; gap: 8px; z-index: 2; }
@@ -424,7 +423,7 @@ a { color: inherit; }
   outline: 1px solid var(--concreto-700);
   box-shadow: 0 30px 50px -25px rgba(0, 0, 0, .8);
 }
-.plantas__foto img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+.plantas__foto img { width: 100%; }
 
 .plantas .titulo-secao { color: #fff; }
 .plantas .titulo-secao em { color: var(--verde-400); }
@@ -476,82 +475,12 @@ a { color: inherit; }
 }
 
 /* ==========================================================================
-   3. CARROSSEL
-   ========================================================================== */
-
-.galeria { padding: 2.5rem 0 4rem; background: var(--verde-050); }
-
-.carrossel__rodape { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
-
-.galeria__controles { display: flex; gap: 10px; flex: none; }
-.galeria__seta {
-  width: 48px;
-  height: 48px;
-  display: grid;
-  place-items: center;
-  border: 1px solid var(--verde-200);
-  border-radius: 50%;
-  background: #fff;
-  color: var(--verde-800);
-  cursor: pointer;
-  transition: background-color .2s, color .2s, opacity .2s;
-}
-.galeria__seta:hover { background: var(--verde-800); color: #fff; }
-.galeria__seta:disabled { opacity: .35; cursor: default; background: #fff; color: var(--verde-800); }
-.galeria__seta svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-
-.carrossel__trilho {
-  position: relative;
-  list-style: none;
-  margin: 0;
-  display: flex;
-  gap: 16px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
-  overscroll-behavior-x: contain;
-  scrollbar-width: none;
-  /* alinha o primeiro slide com o container, mas deixa os outros sangrarem até a borda */
-  padding: 1rem max(var(--gutter), calc((100vw - var(--largura)) / 2 + var(--gutter))) 1.5rem;
-  scroll-padding-inline: max(var(--gutter), calc((100vw - var(--largura)) / 2 + var(--gutter)));
-}
-.carrossel__trilho::-webkit-scrollbar { display: none; }
-.carrossel__trilho:focus-visible { outline-offset: -3px; }
-
-.carrossel__slide {
-  flex: 0 0 auto;
-  height: clamp(340px, 62vw, 460px);
-  scroll-snap-align: start;
-  border-radius: 28px;
-  overflow: hidden;
-  box-shadow: 0 24px 40px -26px rgba(20, 47, 28, .65);
-  background: var(--verde-100);
-}
-.carrossel__slide:nth-child(3n+2) { border-radius: 120px 28px 28px 28px; }
-.carrossel__slide:nth-child(3n) { border-radius: 28px 28px 120px 28px; }
-.carrossel__slide { max-width: calc(100vw - 2 * var(--gutter) - 28px); }
-.carrossel__slide img { height: 100%; width: auto; max-width: 100%; object-fit: cover; }
-
-.carrossel__pontos { display: flex; gap: 8px; }
-.carrossel__pontos button {
-  width: 10px;
-  height: 10px;
-  padding: 0;
-  border: 0;
-  border-radius: 999px;
-  background: var(--verde-200);
-  cursor: pointer;
-  transition: width .3s, background-color .3s;
-}
-.carrossel__pontos button[aria-current="true"] { width: 28px; background: var(--verde-700); }
-
-/* ==========================================================================
    4. O QUE VOCÊ VAI DESCOBRIR
    ========================================================================== */
 
 .descobrir { padding: 4.5rem 0 5rem; background: #fff; }
 
-.descobrir__grade { display: grid; gap: 3rem; align-items: center; margin-bottom: 3.5rem; }
+.descobrir__grade { display: grid; gap: 3rem; align-items: center; }
 @media (min-width: 900px) { .descobrir__grade { grid-template-columns: 1.25fr .75fr; gap: 4rem; } }
 
 .topicos { list-style: none; margin: 1.5rem 0; padding: 0; display: grid; gap: 12px; }
@@ -586,71 +515,14 @@ a { color: inherit; }
 .descobrir__tom { margin: 0; color: var(--tinta-suave); }
 
 .descobrir__foto {
-  max-width: 360px;
+  max-width: 380px;
   margin-inline: auto;
-  border-radius: var(--raio-organico);
+  border-radius: 96px 28px 96px 28px;
   overflow: hidden;
   box-shadow: 0 30px 50px -30px rgba(20, 47, 28, .6);
-  animation: respirar 14s ease-in-out infinite;
 }
-.descobrir__foto img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 92%; }
+.descobrir__foto img { width: 100%; }
 
-/* A janela: concreto por fora, verde por dentro */
-.janela {
-  max-width: 820px;
-  margin: 0 auto;
-  display: grid;
-  gap: 1.5rem;
-  align-items: center;
-  padding: 1.75rem;
-  background: var(--concreto-100) var(--textura-concreto);
-  border-radius: 6px;
-}
-@media (min-width: 640px) { .janela { grid-template-columns: 150px 1fr; padding: 2rem 2.5rem; } }
-.janela p {
-  margin: 0;
-  font-family: var(--fonte-serif);
-  font-size: clamp(1.1rem, 1rem + .5vw, 1.35rem);
-  line-height: 1.45;
-}
-.janela strong { color: var(--verde-800); font-weight: 600; }
-
-.janela__moldura {
-  position: relative;
-  width: 150px;
-  height: 120px;
-  margin: 0 auto;
-  border: 6px solid var(--concreto-500);
-  background: linear-gradient(var(--azul-200), var(--verde-200) 70%, var(--verde-400));
-  overflow: hidden;
-  perspective: 300px;
-}
-.janela__moldura::after {
-  content: "";
-  position: absolute;
-  inset: auto -10px -12px;
-  height: 55px;
-  background:
-    radial-gradient(circle at 15% 70%, var(--verde-700) 0 18px, transparent 19px),
-    radial-gradient(circle at 45% 90%, var(--verde-600) 0 24px, transparent 25px),
-    radial-gradient(circle at 80% 70%, var(--verde-800) 0 22px, transparent 23px);
-}
-.janela__folha {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 50%;
-  z-index: 1;
-  background: rgba(230, 228, 222, .96) var(--textura-concreto);
-  border: 3px solid var(--concreto-500);
-  transition: transform 1.2s cubic-bezier(.6, 0, .2, 1) .3s;
-}
-.janela__folha--esq { left: 0; transform-origin: 0 50%; }
-.janela__folha--dir { right: 0; transform-origin: 100% 50%; }
-.janela.is-visivel .janela__folha--esq,
-html:not(.js) .janela__folha--esq { transform: rotateY(-78deg); }
-.janela.is-visivel .janela__folha--dir,
-html:not(.js) .janela__folha--dir { transform: rotateY(78deg); }
 
 /* ==========================================================================
    5. PARA QUEM É
@@ -665,10 +537,15 @@ html:not(.js) .janela__folha--dir { transform: rotateY(78deg); }
 .para-quem__grade { display: grid; gap: 3rem; align-items: center; }
 @media (min-width: 900px) { .para-quem__grade { grid-template-columns: .85fr 1.15fr; gap: 4.5rem; } }
 
-.para-quem__fotos { position: relative; max-width: 420px; width: 100%; margin-inline: auto; aspect-ratio: 1 / 1.05; }
-.para-quem__foto { position: absolute; object-fit: cover; box-shadow: 0 26px 40px -24px rgba(20, 47, 28, .7); }
-.para-quem__foto--a { left: 0; top: 0; width: 62%; aspect-ratio: 3 / 4; border-radius: 140px 140px 20px 20px; }
-.para-quem__foto--b { right: 0; bottom: 0; width: 54%; aspect-ratio: 3 / 4; border-radius: 20px 90px 20px 90px; border: 6px solid var(--verde-100); }
+.para-quem__foto {
+  max-width: 380px;
+  width: 100%;
+  margin-inline: auto;
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: 0 26px 40px -24px rgba(20, 47, 28, .7);
+}
+.para-quem__foto img { width: 100%; }
 
 .publicos { list-style: none; margin: 1.25rem 0 2rem; padding: 0; }
 .publicos li {
@@ -708,11 +585,11 @@ html:not(.js) .janela__folha--dir { transform: rotateY(78deg); }
 @media (min-width: 900px) { .autora { padding-bottom: calc(5rem + 120px); } }
 
 .autora__grade { display: grid; gap: 2.5rem; align-items: center; }
-@media (min-width: 820px) { .autora__grade { grid-template-columns: 380px 1fr; gap: 4.5rem; } }
+@media (min-width: 820px) { .autora__grade { grid-template-columns: 360px 1fr; gap: 4.5rem; } }
 
 .autora__retrato {
   position: relative;
-  width: min(340px, 86%);
+  width: min(320px, 82%);
   margin: 0 auto;
 }
 .autora__retrato::before {
@@ -728,10 +605,7 @@ html:not(.js) .janela__folha--dir { transform: rotateY(78deg); }
 .autora__retrato img {
   position: relative;
   width: 100%;
-  aspect-ratio: 3 / 4;
-  object-fit: cover;
-  object-position: 30% 45%;
-  border-radius: 999px 999px 24px 24px;
+  border-radius: 40% 40% 24px 24px / 23% 23% 24px 24px;
   box-shadow: 0 30px 50px -30px rgba(20, 47, 28, .7);
 }
 @keyframes respirar {
@@ -800,11 +674,11 @@ html:not(.js) .janela__folha--dir { transform: rotateY(78deg); }
   max-width: 340px;
   width: 100%;
   margin-inline: auto;
-  border-radius: 28px 140px 28px 140px;
+  border-radius: 28px;
   overflow: hidden;
   box-shadow: 0 30px 60px -30px rgba(0, 0, 0, .8);
 }
-.convite__foto img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+.convite__foto img { width: 100%; }
 
 /* ==========================================================================
    8. ADQUIRA SEU EXEMPLAR
@@ -882,7 +756,6 @@ html:not(.js) .janela__folha--dir { transform: rotateY(78deg); }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .carrossel__trilho { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; transition-delay: 0s !important; }
   .js .revelar { opacity: 1; transform: none; }
 }

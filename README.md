@@ -45,4 +45,4 @@ O link `https://www.amazon.com.br/dp/B0GVBBC9XH` aparece em todos os botões e l
 
 ## Imagens
 
-Todas ficam em `assets/img/`. Para trocar uma foto, substitua o arquivo mantendo o mesmo nome. O carrossel ("O livro de perto") está no `index.html`, dentro de `<ul class="carrossel__trilho">`: cada `<li>` é uma foto.
+Todas ficam em `assets/img/` e aparecem inteiras na página (sem corte), apenas com cantos arredondados. Para trocar uma foto, substitua o arquivo mantendo o mesmo nome.
